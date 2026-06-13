@@ -234,15 +234,21 @@ async function send() {
     showTyping();
 
     try {
-        const res = await fetch("/chat",  {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ question: text })
-        });
+       const res = await fetch("http://localhost:8080/chat", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        message: text
+    })
+});
 
-        const data = await res.json();
+        if (!res.ok) {
+    throw new Error("HTTP Error: " + res.status);
+}
+
+const data = await res.json();
 
         removeTyping();
 

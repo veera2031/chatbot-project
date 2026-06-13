@@ -1,30 +1,25 @@
 package com.veera.chatbot.controller;
 
-import com.veera.chatbot.model.ChatRequest;
 import com.veera.chatbot.service.ChatService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/chat")
 @CrossOrigin("*")
 public class ChatController {
 
     @Autowired
     private ChatService chatService;
 
-    @PostMapping
-    public Map<String, String> chat(@RequestBody ChatRequest request) {
+    @PostMapping("/chat")
+    public Map<String, String> chat(@RequestBody Map<String, String> request) {
 
-        String answer = chatService.askBot(request.getQuestion());
+        String message = request.get("message");
 
-        Map<String, String> response = new HashMap<>();
-        response.put("reply", answer);
+        String reply = chatService.askBot(message);
 
-        return response;
+        return Map.of("reply", reply);
     }
 }
